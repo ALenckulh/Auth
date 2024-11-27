@@ -58,6 +58,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         ? MyColors.primary550 // Color when date is selected
         : MyColors.primary400; // Default color
 
+    // Define fontWeight based on whether a date is selected
+    FontWeight fontWeight = selectedDate != null
+        ? FontWeight.w600 // Bold when date is selected
+        : FontWeight.w500; // Normal when no date is selected
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -70,7 +75,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               color: widget.hasError ? MyColors.red200 : Colors.transparent,
             ),
           ),
-          color: MyColors.primary200,
+          color: MyColors.primary300,
           onPressed: () => _selectDate(context),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -91,6 +96,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   style:
                       Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(
                             color: textColor,
+                            fontWeight: fontWeight, // Apply dynamic fontWeight
                           ),
                 ),
               ],

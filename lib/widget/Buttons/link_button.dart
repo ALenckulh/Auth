@@ -20,7 +20,7 @@ class LinkButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: Theme.of(context).primaryTextTheme.labelSmall?.copyWith(
+        style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(
               color: MyColors.primary550,
               decoration: TextDecoration.underline,
             ),

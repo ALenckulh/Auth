@@ -32,6 +32,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return SizedBox(
       width: 400,
       child: TextField(
+        style: const TextStyle(fontWeight: FontWeight.w600),
         obscureText: controller.obscureText,
         decoration: InputDecoration(
           labelText: widget.label, // Usar o parâmetro label aqui
@@ -75,6 +76,7 @@ class _PasswordConfirmationFieldState extends State<PasswordConfirmationField> {
     return SizedBox(
       width: 400,
       child: TextField(
+        style: const TextStyle(fontWeight: FontWeight.w600),
         obscureText: controller.obscureText,
         decoration: InputDecoration(
           labelText: widget.label, // Usar o parâmetro label aqui

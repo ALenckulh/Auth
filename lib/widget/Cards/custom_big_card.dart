@@ -8,7 +8,7 @@ class CustomBigCard extends StatelessWidget {
   const CustomBigCard({
     super.key,
     required this.child,
-    this.height = 800,
+    this.height = 694,
   });
 
   @override
