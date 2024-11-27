@@ -7,7 +7,6 @@ class CustomDatePicker extends StatefulWidget {
   final String buttonText;
   final IconData? icon;
   final Function(DateTime?) onDateSelected;
-  final bool hasError;
   final String errorText;
   final DateTime? initialDate;
 
@@ -16,7 +15,6 @@ class CustomDatePicker extends StatefulWidget {
     this.buttonText = 'Selecionar Data',
     this.icon = PhosphorIcons.calendar,
     required this.onDateSelected,
-    this.hasError = false,
     this.errorText = 'Date is required',
     this.initialDate,
   });
@@ -72,7 +70,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(
-              color: widget.hasError ? MyColors.red200 : Colors.transparent,
+              color: widget.errorText.isNotEmpty
+                  ? MyColors.red200
+                  : Colors.transparent,
             ),
           ),
           color: MyColors.primary300,
@@ -104,18 +104,16 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           ),
         ),
         // Error message
-        if (widget.hasError) ...[
+        if (widget.errorText.isNotEmpty) ...[
           const SizedBox(height: 4),
           Row(
             children: [
               const SizedBox(width: 14),
               Text(
                 widget.errorText,
-                style: const TextStyle(
-                  color: MyColors.red50,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
+                      color: MyColors.red50,
+                    ),
               ),
             ],
           ),

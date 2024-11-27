@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 class CustomBigCard extends StatelessWidget {
   final Widget child;
-  final double? height;
 
   const CustomBigCard({
     super.key,
     required this.child,
-    this.height = 694,
   });
 
   @override
@@ -16,7 +14,6 @@ class CustomBigCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24.0),
       width: double.infinity,
-      height: height,
       decoration: BoxDecoration(
         color: MyColors.white0,
         borderRadius: const BorderRadius.only(

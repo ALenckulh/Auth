@@ -3,21 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class PasswordFieldController {
-  bool obscureText = true;
-
-  void updateObscureText() {
-    obscureText = !obscureText;
-  }
-}
-
 class PasswordField extends StatefulWidget {
-  final String label; // Novo parâmetro para o rótulo
+  final String label;
+  final String? errorText;
+  final TextEditingController controller;
 
   const PasswordField({
     super.key,
+    this.errorText,
     this.label = 'Senha',
-    required TextEditingController controller, // Rótulo padrão
+    required this.controller,
   });
 
   @override
@@ -25,74 +20,35 @@ class PasswordField extends StatefulWidget {
 }
 
 class _PasswordFieldState extends State<PasswordField> {
-  final PasswordFieldController controller = PasswordFieldController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      child: TextField(
-        style: const TextStyle(fontWeight: FontWeight.w600),
-        obscureText: controller.obscureText,
-        decoration: InputDecoration(
-          labelText: widget.label, // Usar o parâmetro label aqui
-          suffixIcon: IconButton(
-            icon: Icon(
-              controller.obscureText
-                  ? PhosphorIcons.eyeClosed // Ícone de olho fechado
-                  : PhosphorIcons.eye, // Ícone de olho aberto
-            ),
-            onPressed: () {
-              setState(() {
-                controller.updateObscureText(); // Atualiza o estado
-              });
-            },
-          ),
-          prefixIcon: Icon(PhosphorIcons.lock),
-        ),
-      ),
-    );
+  bool obscureText = true;
+  void updateObscureText() {
+    obscureText = !obscureText;
   }
-}
-
-class PasswordConfirmationField extends StatefulWidget {
-  final String label; // Novo parâmetro para o rótulo
-
-  const PasswordConfirmationField({
-    super.key,
-    this.label = 'Senha', // Rótulo padrão
-  });
-
-  @override
-  _PasswordConfirmationFieldState createState() =>
-      _PasswordConfirmationFieldState();
-}
-
-class _PasswordConfirmationFieldState extends State<PasswordConfirmationField> {
-  final PasswordFieldController controller = PasswordFieldController();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 400,
       child: TextField(
+        controller: widget.controller,
         style: const TextStyle(fontWeight: FontWeight.w600),
-        obscureText: controller.obscureText,
+        obscureText: obscureText,
         decoration: InputDecoration(
+          errorText: widget.errorText,
           labelText: widget.label, // Usar o parâmetro label aqui
           suffixIcon: IconButton(
             icon: Icon(
-              controller.obscureText
+              obscureText
                   ? PhosphorIcons.eyeClosed // Ícone de olho fechado
                   : PhosphorIcons.eye, // Ícone de olho aberto
             ),
             onPressed: () {
               setState(() {
-                controller.updateObscureText(); // Atualiza o estado
+                updateObscureText(); // Atualiza o estado
               });
             },
           ),
-          prefixIcon: Icon(PhosphorIcons.lock),
+          prefixIcon: const Icon(PhosphorIcons.lock),
         ),
       ),
     );

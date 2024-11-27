@@ -1,4 +1,5 @@
 import 'package:auth/themes/colors.dart';
+import 'package:auth/widget/Cards/custom_big_card.dart';
 import 'package:flutter/material.dart';
 
 class Bg extends StatelessWidget {
@@ -13,7 +14,7 @@ class Bg extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height - 45,
       child: Stack(
         children: [
           Container(
@@ -38,7 +39,14 @@ class Bg extends StatelessWidget {
             ),
           ),
           SingleChildScrollView(
-            child: child,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height - 45,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [CustomBigCard(child: child)],
+              ),
+            ),
           ),
         ],
       ),

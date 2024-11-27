@@ -40,14 +40,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCG6f6jWKXAK4em4axYzRqT1_qMakkoUoE',
-    appId: '1:422819166801:web:abdb95dae33face9ab1670',
-    messagingSenderId: '422819166801',
-    projectId: 'auth-dcf32',
-    authDomain: 'auth-dcf32.firebaseapp.com',
-    storageBucket: 'auth-dcf32.firebasestorage.app',
-    measurementId: 'G-FKXNHPY0XM',
-  );
+      apiKey: "AIzaSyCG6f6jWKXAK4em4axYzRqT1_qMakkoUoE",
+      appId: "1:422819166801:web:abdb95dae33face9ab1670",
+      messagingSenderId: "422819166801",
+      projectId: "auth-dcf32",
+      authDomain: "auth-dcf32.firebaseapp.com",
+      storageBucket: "auth-dcf32.firebasestorage.app",
+      measurementId: "G-FKXNHPY0XM");
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA5Zz8s9B_bPpcl8813eSVEQnpeprvW_5k',

@@ -51,6 +51,10 @@ class CustomThemes {
         fontSize: 12,
         fontWeight: FontWeight.w600,
       ),
+      labelMedium: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
       //labelSmall usado no botão
       labelSmall: TextStyle(
         fontSize: 16,
@@ -62,13 +66,13 @@ class CustomThemes {
 
     //
     colorScheme: const ColorScheme(
-      primary: MyColors.primary500,
+      primary: MyColors.primary550,
       secondary: MyColors.secondary200,
       surface: MyColors.white0,
       error: MyColors.red200,
       onPrimary: MyColors.primary100,
       onSecondary: MyColors.white10,
-      onSurface: MyColors.primary550,
+      onSurface: MyColors.primary500,
       onError: MyColors.primary100,
       brightness: Brightness.dark,
     ),
@@ -142,6 +146,11 @@ class CustomThemes {
     ),
     //
     inputDecorationTheme: InputDecorationTheme(
+      errorStyle: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: MyColors.red50,
+      ),
       fillColor: MyColors.primary300,
       filled: true,
       prefixIconColor: MyColors.primary400,
