@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "422819166801",
+    "project_id": "auth-dcf32",
+    "storage_bucket": "auth-dcf32.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422819166801:android:06f512aec3d4fcecab1670",
+        "android_client_info": {
+          "package_name": "com.example.auth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5Zz8s9B_bPpcl8813eSVEQnpeprvW_5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
