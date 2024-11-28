@@ -40,8 +40,8 @@ class Validators {
 
   //confirmar senha
   static String? validateConfirmPassword(String password, String confirmPw) {
-    if (confirmPw.isEmpty) {
-      return 'Confirmar a senha é obrigatório';
+    if (confirmPw == null || confirmPw.isEmpty) {
+      return 'Confirmar a senha é obrigatória';
     }
     if (password != confirmPw) {
       return 'As senhas não coincidem';
