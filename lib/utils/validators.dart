@@ -39,7 +39,7 @@ class Validators {
   }
 
   //confirmar senha
-  static String? validateConfirmPassword(String password, String confirmPw) {
+  static String? validateConfirmPassword(String password, String? confirmPw) {
     if (confirmPw == null || confirmPw.isEmpty) {
       return 'Confirmar a senha é obrigatória';
     }

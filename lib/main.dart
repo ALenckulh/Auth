@@ -1,3 +1,4 @@
+import 'package:auth/pages/home_page.dart';
 import 'package:auth/pages/signin_page.dart';
 import 'package:auth/pages/signup_page.dart';
 import 'package:auth/themes/custom_themes.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       title: 'Auth',
       initialRoute: '/',
       routes: {
-        '/': (context) => const SignupPage(),
+        '/': (context) => HomePage(),
+        '/signup': (context) => const SignupPage(),
         '/signin': (context) => SigninPage(),
       },
       theme: CustomThemes().defaultTheme,

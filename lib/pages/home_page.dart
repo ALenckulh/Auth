@@ -270,8 +270,8 @@ class _HomeState extends State<HomePage> {
     return Scaffold(
       appBar: const Header(
         // Cabeçalho do app
-        showRepairButton: false,
-        showAvatar: false,
+        showRepairButton: true,
+        showAvatar: true,
       ),
       floatingActionButton: FloatingActionButton(
         // Botão flutuante para abrir o modal de criação
@@ -279,240 +279,249 @@ class _HomeState extends State<HomePage> {
             openBookBox(null), // Chama a função openBookBox para criar um livro
         child: const Icon(PhosphorIcons.plus), // Ícone de adicionar livro
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        // Constrói o corpo com base nos dados do Firestore
-        stream: widget.firestoreService
-            .getBooksStream(), // Obtém o stream de livros
-        builder: (context, snapshot) {
-          // Verifica se os dados foram carregados corretamente
-          if (snapshot.hasData) {
-            // Cria uma lista de livros a partir dos dados recebidos
-            List booksList = snapshot.data!.docs;
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: StreamBuilder<QuerySnapshot>(
+          // Constrói o corpo com base nos dados do Firestore
+          stream: widget.firestoreService
+              .getBooksStream(), // Obtém o stream de livros
+          builder: (context, snapshot) {
+            // Verifica se os dados foram carregados corretamente
+            if (snapshot.hasData) {
+              // Cria uma lista de livros a partir dos dados recebidos
+              List booksList = snapshot.data!.docs;
 
-            // Caso não haja livros registrados
-            if (booksList.isEmpty) {
-              // Exibe uma mensagem indicando que não há livros cadastrados
-              return Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Ícone de livro
-                    const Icon(
-                      PhosphorIcons.book,
-                      size: 32,
-                      color: MyColors.white10,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      "No books registered...",
-                      style: Theme.of(context)
-                          .primaryTextTheme
-                          .titleSmall
-                          ?.copyWith(
-                            color: MyColors.white25,
-                          ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            // Exibe os livros cadastrados em uma lista
-            return ListView.builder(
-              itemCount: booksList.length,
-              itemBuilder: (context, index) {
-                // Obtém os dados do livro
-                DocumentSnapshot document = booksList[index];
-                String docId = document.id;
-
-                Map<String, dynamic> book =
-                    document.data() as Map<String, dynamic>;
-                String title = book['title'];
-                String author = book['author'];
-                String genre = book['genre'];
-                String description = book['description'];
-                String language = book['language'];
-                DateTime release = book['release'].toDate();
-
-                // Retorna o layout de cada item da lista de livros
-                return ListTile(
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
+              // Caso não haja livros registrados
+              if (booksList.isEmpty) {
+                // Exibe uma mensagem indicando que não há livros cadastrados
+                return Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Ícone de editar livro
-                      IconButton(
-                        icon: const Icon(PhosphorIcons.pencilSimple),
-                        onPressed: () => openBookBox(docId,
-                            title: title,
-                            author: author,
-                            genre: genre,
-                            description: description,
-                            language: language,
-                            releaseDate: release),
+                      // Ícone de livro
+                      const Icon(
+                        PhosphorIcons.book,
+                        size: 32,
+                        color: MyColors.white10,
                       ),
-                      // Ícone de excluir livro
-                      IconButton(
-                        icon: const Icon(
-                          PhosphorIcons.trashSimple,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          // Deleta o livro
-                          widget.firestoreService.deleteBook(docId);
-                        },
-                      ),
-                    ],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  contentPadding: const EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                    top: 16,
-                    bottom: 4,
-                  ),
-                  title: Row(
-                    children: [
-                      // Exibe o título do livro
+                      const SizedBox(width: 12),
                       Text(
-                        title,
-                        textAlign: TextAlign.start,
+                        "No books registered...",
                         style: Theme.of(context)
                             .primaryTextTheme
                             .titleSmall
                             ?.copyWith(
-                              color: MyColors.white100,
-                            ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Exibe o ano de lançamento do livro
-                      Text(
-                        '(${release.year})',
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .titleSmall
-                            ?.copyWith(
-                              color: MyColors.primary500,
-                            ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      // Exibe o nome do autor
-                      Text(
-                        author,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .bodySmall
-                            ?.copyWith(
                               color: MyColors.white25,
                             ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      // Exibe a descrição do livro
-                      Text(
-                        description,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .bodySmall
-                            ?.copyWith(
-                              color: MyColors.white25,
-                            ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          // Exibe o gênero do livro
-                          Text(
-                            "Gender:",
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .labelLarge
-                                ?.copyWith(
-                                  color: MyColors.white10,
-                                ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            genre,
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: MyColors.white25,
-                                ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          // Exibe o idioma do livro
-                          Text(
-                            "Language:",
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .labelLarge
-                                ?.copyWith(
-                                  color: MyColors.white10,
-                                ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            language,
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: MyColors.white25,
-                                ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      // Exibe uma linha de separação
-                      const SizedBox(
-                        width: double.infinity,
-                        child: Divider(
-                          color: MyColors.primary400,
-                        ),
                       ),
                     ],
                   ),
                 );
-              },
-            );
-          } else {
-            // Exibe um carregamento caso os dados não tenham sido carregados
-            return const Center(
-              child: Row(
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(width: 4),
-                  Text("Loading books..."),
-                ],
-              ),
-            );
-          }
-        },
+              }
+
+              // Exibe os livros cadastrados em uma lista
+              return ListView.builder(
+                itemCount: booksList.length,
+                itemBuilder: (context, index) {
+                  // Obtém os dados do livro
+                  DocumentSnapshot document = booksList[index];
+                  String docId = document.id;
+
+                  Map<String, dynamic> book =
+                      document.data() as Map<String, dynamic>;
+                  String title = book['title'];
+                  String author = book['author'];
+                  String genre = book['genre'];
+                  String description = book['description'];
+                  String language = book['language'];
+                  DateTime release = book['release'].toDate();
+
+                  // Retorna o layout de cada item da lista de livros
+                  return ListTile(
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Ícone de editar livro
+                        IconButton(
+                          icon: const Icon(PhosphorIcons.pencilSimple),
+                          onPressed: () => openBookBox(docId,
+                              title: title,
+                              author: author,
+                              genre: genre,
+                              description: description,
+                              language: language,
+                              releaseDate: release),
+                        ),
+                        // Ícone de excluir livro
+                        IconButton(
+                          icon: const Icon(
+                            PhosphorIcons.trashSimple,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            // Deleta o livro
+                            widget.firestoreService.deleteBook(docId);
+                          },
+                        ),
+                      ],
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    contentPadding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                      top: 16,
+                      bottom: 4,
+                    ),
+                    title: Row(
+                      children: [
+                        // Exibe o título do livro
+                        Text(
+                          title,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .titleSmall
+                              ?.copyWith(
+                                color: MyColors.white100,
+                              ),
+                        ),
+                        const SizedBox(width: 8),
+                        // Exibe o ano de lançamento do livro
+                        Text(
+                          '(${release.year})',
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .titleSmall
+                              ?.copyWith(
+                                color: MyColors.primary500,
+                              ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        // Exibe o nome do autor
+                        Text(
+                          author,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: MyColors.white25,
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        // Exibe a descrição do livro
+                        Text(
+                          description,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: MyColors.white25,
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            // Exibe o gênero do livro
+                            Text(
+                              "Gender:",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                    color: MyColors.white10,
+                                  ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              genre,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: MyColors.white25,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: [
+                            // Exibe o idioma do livro
+                            Text(
+                              "Language:",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                    color: MyColors.white10,
+                                  ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              language,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: MyColors.white25,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        // Exibe uma linha de separação
+                        const SizedBox(
+                          width: double.infinity,
+                          child: Divider(
+                            color: MyColors.primary400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            } else {
+              // Exibe um carregamento caso os dados não tenham sido carregados
+              return const SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 4),
+                      Text("Loading books..."),
+                    ],
+                  ),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

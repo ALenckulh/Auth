@@ -1,8 +1,11 @@
+import 'package:auth/services/auth_service.dart';
 import 'package:auth/themes/colors.dart';
-import 'package:auth/widget/Buttons/custom_circle_avatar.dart';
-import 'package:auth/widget/Buttons/purple_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import 'Buttons/custom_circle_avatar.dart';
+import 'Buttons/red_button.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
   final bool showRepairButton; // Para controlar a exibição do botão de reparo
@@ -47,15 +50,34 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             Row(
               children: [
                 if (showRepairButton) ...[
-                  PurpleButton(
-                    size: ButtonSize.sm,
-                    onPressed: () => {},
-                    text: "Reparos",
-                    icon: PhosphorIcons.storefront,
+                  RedButton(
+                    height: 40,
+                    onPressed: (AuthService().signout),
+                    text: "Sair da Conta",
+                    icon: PhosphorIcons.signOut,
                   ),
                   const SizedBox(width: 12),
                 ],
-                if (showAvatar) const CustomCircleAvatar(),
+                if (showAvatar)
+                  StreamBuilder(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      return CustomCircleAvatar(
+                        onTap: () {
+                          // Verificar se o usuário está autenticado
+                          if (snapshot.hasData) {
+                            print("Usuário está logado");
+                            // Usuário está logado, navegar para a página de perfil ou informações
+                            Navigator.pushNamed(context, '/');
+                          } else {
+                            print("Usuário não está logado");
+                            // Usuário não está logado, navegar para a página de login
+                            Navigator.pushNamed(context, '/signin');
+                          }
+                        },
+                      );
+                    },
+                  ),
               ],
             )
           ],

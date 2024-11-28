@@ -1,3 +1,4 @@
+import 'package:auth/widget/Buttons/google_button.dart';
 import 'package:auth/widget/Buttons/purple_button.dart' as purple;
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -6,7 +7,6 @@ import '../services/auth_service.dart';
 import '../themes/colors.dart';
 import '../widget/Backgrounds/bg.dart';
 import '../widget/Buttons/link_button.dart';
-import '../widget/Cards/custom_big_card.dart';
 import '../widget/Inputs/password_field.dart';
 import '../widget/header.dart';
 
@@ -25,17 +25,22 @@ class _SigninScreenState extends State<SigninPage> {
   String? passwordError;
 
   void validateSignin() async {
-    String? authError = await signin(
-        email: emailController.text, password: passwordController.text);
+    String? authError = await AuthService()
+        .signin(email: emailController.text, password: passwordController.text);
 
     if (authError != null) {
-      setState(() {
-        if (authError == 'Nenhum usuário possui esse e-mail') {
-          emailError = 'Nenhum usuário possui esse e-mail';
-        } else if (authError == 'Senha inválida') {
-          passwordError = 'Senha inválida';
-        }
-      });
+      setState(
+        () {
+          if (authError == 'E-mail inválido') {
+            emailError = 'E-mail inválido';
+          } else if (authError == 'Senha inválida') {
+            passwordError = 'Senha inválida';
+          }
+        },
+      );
+    }
+    if (authError == null) {
+      Navigator.pushNamed(context, '/');
     }
   }
 
@@ -44,96 +49,91 @@ class _SigninScreenState extends State<SigninPage> {
     return Scaffold(
       appBar: const HeaderWithLogo(),
       body: Bg(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 45,
+        child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomBigCard(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Entrar',
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .titleLarge
-                            ?.copyWith(
-                              color: MyColors.primary500,
-                            ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      SizedBox(
-                        width: 400,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            errorText: emailError,
-                            labelText: 'E-mail',
-                            prefixIcon: const Icon(PhosphorIcons.envelope),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      PasswordField(
-                        errorText: passwordError,
-                        controller: TextEditingController(),
-                        label: 'Senha',
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: 400,
-                        child: Row(
-                          children: [
-                            LinkButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/forgotpassword');
-                              },
-                              text: 'Esqueceu a Senha?',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        width: 400,
-                        height: 35,
-                        child: purple.PurpleButton(
-                            onPressed: () => {},
-                            text: "Entrar",
-                            type: purple.ButtonType.fill),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Não possui conta? ',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          LinkButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/signup');
-                            },
-                            text: 'Criar Conta',
-                          ),
-                        ],
-                      ),
-                    ],
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Entrar',
+                style: Theme.of(context).primaryTextTheme.titleLarge?.copyWith(
+                      color: MyColors.primary500,
+                    ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              SizedBox(
+                width: 400,
+                child: TextField(
+                  controller: emailController,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  decoration: InputDecoration(
+                    errorText: emailError,
+                    labelText: 'E-mail',
+                    prefixIcon: const Icon(PhosphorIcons.envelope),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              PasswordField(
+                errorText: passwordError,
+                controller: passwordController,
+                label: 'Senha',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: 400,
+                child: Row(
+                  children: [
+                    LinkButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/forgotpassword');
+                      },
+                      text: 'Esqueceu a Senha?',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: 400,
+                child: purple.PurpleButton(
+                    onPressed: validateSignin,
+                    text: "Entrar",
+                    type: purple.ButtonType.fill),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const SizedBox(width: 400, child: Divider()),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(width: 400, child: GoogleSignInButton()),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Não possui conta? ',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  LinkButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
+                    text: 'Criar Conta',
+                  ),
+                ],
               ),
             ],
           ),

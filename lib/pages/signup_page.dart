@@ -61,6 +61,9 @@ class _SignupState extends State<SignupPage> {
 
     // Se não há erros, realizar o cadastro
     String? authError = await AuthService().signup(
+      name: nameController.text,
+      surname: surnameController.text,
+      date: selectedDate!,
       email: emailController.text,
       password: passwordController.text,
     );
@@ -69,6 +72,10 @@ class _SignupState extends State<SignupPage> {
       setState(() {
         emailError = authError; // Exibir erro no campo de e-mail
       });
+    }
+
+    if (authError == null) {
+      Navigator.pushNamed(context, '/'); // Navegar para a página inicial
     }
   }
 

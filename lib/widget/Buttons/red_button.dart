@@ -8,10 +8,12 @@ class RedButton extends StatelessWidget {
   final IconData? icon;
   final VoidCallback onPressed;
   final String text;
+  final double height;
 
   const RedButton({
     this.type = ButtonType.fill,
     this.icon,
+    this.height = 56,
     required this.onPressed,
     required this.text,
     super.key,
@@ -79,7 +81,7 @@ class RedButton extends StatelessWidget {
     return Container(
       decoration: _getBoxDecoration(),
       child: MaterialButton(
-        height: 56,
+        height: height,
         highlightColor: _getStatusColor(),
         focusColor: _getStatusColor(),
         splashColor: _getStatusColor(),
