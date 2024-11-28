@@ -1,45 +1,39 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class AuthService {
-  Future<void> signup({
+  Future<String?> signup({
     required String email,
     required String password,
   }) async {
     try {
       UserCredential? userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      return null; // Retorna null se o cadastro for bem-sucedido.
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('An account already exists with that email.');
+      if (e.code == 'email-already-in-use') {
+        return 'Já existe uma conta com esse e-mail.';
       } else if (e.code == 'invalid-email') {
-        print('The email provided is invalid.');
-      } else if (e.code == 'operation-not-allowed') {
-        print('Email/password accounts are not enabled.');
+        return 'O e-mail fornecido é inválido.';
       }
-    } catch (e) {
-      print('Unexpected error: $e');
     }
+    return null; // Se não houver erro específico, retorna null.
   }
 }
 
-Future<void> signin(
-    {required String email,
-    required String password,
-    required BuildContext context}) async {
+Future<String?> signin(
+    {required String email, required String password}) async {
   try {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   } on FirebaseAuthException catch (e) {
     String message = '';
     if (e.code == 'invalid-email') {
-      message = 'No user found for that email.';
+      return 'Nenhum usuário possui esse e-mail';
     } else if (e.code == 'invalid-credential') {
-      message = 'Wrong password provided for that user.';
+      return 'Senha inválida';
     }
-  } catch (e) {}
+  }
+  return null;
 }
 
 Future<void> signout() async {
