@@ -2,6 +2,7 @@ import 'package:auth/widget/Buttons/purple_button.dart' as purple;
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../services/auth_service.dart';
 import '../themes/colors.dart';
 import '../widget/Backgrounds/bg.dart';
 import '../widget/Buttons/link_button.dart';
@@ -12,15 +13,32 @@ import '../widget/header.dart';
 class SigninPage extends StatefulWidget {
   SigninPage({super.key, String? selectedItem});
 
-  //text controllers
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   @override
   State<SigninPage> createState() => _SigninScreenState();
 }
 
 class _SigninScreenState extends State<SigninPage> {
+  //text controllers
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  String? emailError;
+  String? passwordError;
+
+  void validateSignin() async {
+    String? authError = await signin(
+        email: emailController.text, password: passwordController.text);
+
+    if (authError != null) {
+      setState(() {
+        if (authError == 'Nenhum usuário possui esse e-mail') {
+          emailError = 'Nenhum usuário possui esse e-mail';
+        } else if (authError == 'Senha inválida') {
+          passwordError = 'Senha inválida';
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +68,13 @@ class _SigninScreenState extends State<SigninPage> {
                       const SizedBox(
                         height: 50,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 400,
                         child: TextField(
                           decoration: InputDecoration(
+                            errorText: emailError,
                             labelText: 'E-mail',
-                            prefixIcon: Icon(PhosphorIcons.envelope),
+                            prefixIcon: const Icon(PhosphorIcons.envelope),
                           ),
                         ),
                       ),
@@ -63,6 +82,7 @@ class _SigninScreenState extends State<SigninPage> {
                         height: 10,
                       ),
                       PasswordField(
+                        errorText: passwordError,
                         controller: TextEditingController(),
                         label: 'Senha',
                       ),

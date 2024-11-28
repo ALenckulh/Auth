@@ -56,14 +56,20 @@ class _SignupState extends State<SignupPage> {
       confirmPwError,
       dateError
     ].any((error) => error != null)) {
-      return; // Não prosseguir se houver erros
+      return;
     }
 
     // Se não há erros, realizar o cadastro
-    await AuthService().signup(
+    String? authError = await AuthService().signup(
       email: emailController.text,
       password: passwordController.text,
     );
+
+    if (authError != null) {
+      setState(() {
+        emailError = authError; // Exibir erro no campo de e-mail
+      });
+    }
   }
 
   @override

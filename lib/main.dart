@@ -23,8 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Auth',
       initialRoute: '/',
       routes: {
-        '/': (context) => SignupPage(),
-        '/signup': (context) => SignupPage(),
+        '/': (context) => const SignupPage(),
         '/signin': (context) => SigninPage(),
       },
       theme: CustomThemes().defaultTheme,

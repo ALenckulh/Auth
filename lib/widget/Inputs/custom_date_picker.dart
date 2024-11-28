@@ -108,7 +108,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           const SizedBox(height: 4),
           Row(
             children: [
-              const SizedBox(width: 14),
+              const SizedBox(width: 10),
               Text(
                 widget.errorText,
                 style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
