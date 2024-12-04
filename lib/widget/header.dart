@@ -52,7 +52,10 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 if (showRepairButton) ...[
                   RedButton(
                     height: 40,
-                    onPressed: (AuthService().signout),
+                    onPressed: () async => {
+                      await AuthService().signout,
+                      Navigator.pushNamed(context, '/signin')
+                    },
                     text: "Sair da Conta",
                     icon: PhosphorIcons.signOut,
                   ),

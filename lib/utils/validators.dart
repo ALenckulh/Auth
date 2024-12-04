@@ -18,7 +18,7 @@ class Validators {
   //email
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'E-mail é obrigatório';
+      return '';
     }
     return null;
   }
